@@ -1,0 +1,19 @@
+<html>
+<head id="html">
+  <style>
+    html {
+      background: url(conway-dist.jpg) no-repeat center center fixed;
+      background-size: cover; 
+    }
+  </style>
+</head>
+<body>
+<script>
+  setInterval(function () {
+    // location.reload();
+    var random = Math.random();
+    document.documentElement.style.backgroundImage = "url(conway-dist.jpg?r=" + random + ")";
+  }, 1000);
+</script>
+</body>
+</html>
