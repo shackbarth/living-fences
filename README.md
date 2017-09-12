@@ -11,7 +11,10 @@ $ cd www
 $ python3 -m http.server
 ```
 
-## The pull up the image
+## To pull up the image
 
 Point your browser to `http://127.0.0.1:8000`
 
+## To shut everything down
+
+You can stop the script and the webserver by pressing control-C, or just close out of the terminal.
