@@ -99,31 +99,23 @@ def indicesToPixels (xIndex, yIndex):
   yPixel = topLeftY + yShiftFactor + ((bottomLeftY - topLeftY) * yIndex / gridHeight) * yExpansionFactor
   return [xPixel, yPixel]
 
-def processPicture():
-  im = Image.open("./ChainLink.jpg").convert("RGBA")
-  openEye = Image.open("3.png").convert("RGBA")
-  closedEye = Image.open("6.png").convert("RGBA")
 
-  openEye = openEye.resize((200, 200), Image.ANTIALIAS)
-  closedEye = closedEye.resize((200, 200), Image.ANTIALIAS)
-  pix = im.load()
 
-  currentBoard = [[0 for x in range(gridWidth + 1)] for y in range(gridHeight + 1)]
+im = Image.open("./ChainLink.jpg").convert("RGBA")
+openEye = Image.open("3.png").convert("RGBA")
+closedEye = Image.open("6.png").convert("RGBA")
 
+openEye = openEye.resize((200, 200), Image.ANTIALIAS)
+closedEye = closedEye.resize((200, 200), Image.ANTIALIAS)
+
+def processPicture(currentBoard, index):
   for xIndex in range(0, gridWidth + 1):
     for yIndex in range(0, gridHeight + 1):
       if xIndex % 2 is yIndex % 2:
         [xPixel, yPixel] = indicesToPixels(xIndex, yIndex)
         currentBoard[yIndex][xIndex] = 0
 
-  print("Current Board:")
-  for row in currentBoard:
-    print("".join(map(toArt, row)))
-
   nextBoard = getNextBoard(currentBoard)
-  print("Next Board:")
-  for row in nextBoard:
-    print("".join(map(toArt, row)))
   for xIndex in range(0, gridWidth + 1):
     for yIndex in range(0, gridHeight + 1):
       if xIndex % 2 is yIndex % 2:
@@ -134,7 +126,16 @@ def processPicture():
         else:
           im.paste(closedEye, (int(xPixel) - 100, int(yPixel) - 100), closedEye)
 
-  im.save("output.png")
+  im.save("output" + str(index) + ".png")
+  return nextBoard
+
+def makeVideo():
+  currentBoard = [[0 for x in range(gridWidth + 1)] for y in range(gridHeight + 1)]
+  for index in range(0, 3):
+    currentBoard = processPicture(currentBoard, index);
+    print("Board:")
+    for row in currentBoard:
+      print("".join(map(toArt, row)))
 
 
 def debug():
@@ -145,6 +146,6 @@ def debug():
     background.show()
     im.save('out.png')
 
-processPicture()
+makeVideo()
 
 # debug()
