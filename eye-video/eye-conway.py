@@ -109,12 +109,14 @@ def makeVideo():
   for row in currentBoard:
     print("".join(map(toArt, row)))
 
-  for index in range(0, 3):
+  for index in range(0, 10):
     im = processPicture(currentBoard);
-    im.save("output" + str(index) + ".png")
+    im.save("output" + str(index).rjust(5, "0") + ".png")
     currentBoard = getNextBoard(currentBoard)
     print("Board:")
     for row in currentBoard:
       print("".join(map(toArt, row)))
 
 makeVideo()
+
+# $ ffmpeg -i output%05d.png -vcodec gif -y conway-eye.gif
