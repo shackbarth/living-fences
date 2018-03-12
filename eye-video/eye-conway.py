@@ -61,26 +61,6 @@ def getNextBoard (currentBoard):
       if livingNeighborCount == 2 and currentBoard[yIndex][xIndex] == 0:
         continue
       nextBoard[yIndex][xIndex] = 1
-
-  if livingCellCount == 0:
-    i = 4
-    offset = -2
-    nextBoard[i + offset][i] = 1
-    i = i + 1
-    nextBoard[i + offset][i] = 1
-    i = i + 1
-    nextBoard[i + offset][i] = 1
-    i = i + 1
-    nextBoard[i + offset][i] = 1
-    i = i + 1
-    nextBoard[i + offset][i] = 1
-    i = i + 1
-    nextBoard[i + offset][i] = 1
-    i = i + 1
-    nextBoard[i + offset][i] = 1
-    i = i + 1
-    nextBoard[i + offset][i] = 1
-
   return nextBoard
 
 xExpansion = (bottomRightX - bottomLeftX) / (topRightX - topLeftX)
@@ -108,44 +88,33 @@ closedEye = Image.open("6.png").convert("RGBA")
 openEye = openEye.resize((200, 200), Image.ANTIALIAS)
 closedEye = closedEye.resize((200, 200), Image.ANTIALIAS)
 
-def processPicture(currentBoard, index):
-  for xIndex in range(0, gridWidth + 1):
-    for yIndex in range(0, gridHeight + 1):
-      if xIndex % 2 is yIndex % 2:
-        [xPixel, yPixel] = indicesToPixels(xIndex, yIndex)
-        currentBoard[yIndex][xIndex] = 0
-
-  nextBoard = getNextBoard(currentBoard)
+def processPicture(currentBoard):
   for xIndex in range(0, gridWidth + 1):
     for yIndex in range(0, gridHeight + 1):
       if xIndex % 2 is yIndex % 2:
         [xPixel, yPixel] = indicesToPixels(xIndex, yIndex)
 
-        if nextBoard[yIndex][xIndex] == 1:
+        if currentBoard[yIndex][xIndex] == 1:
           im.paste(openEye, (int(xPixel) - 100, int(yPixel) - 100), openEye)
         else:
           im.paste(closedEye, (int(xPixel) - 100, int(yPixel) - 100), closedEye)
-
-  im.save("output" + str(index) + ".png")
-  return nextBoard
+  return im
 
 def makeVideo():
   currentBoard = [[0 for x in range(gridWidth + 1)] for y in range(gridHeight + 1)]
+  for i in range(4, 12):
+    currentBoard[i - 2][i] = 1
+
+  print("Board:")
+  for row in currentBoard:
+    print("".join(map(toArt, row)))
+
   for index in range(0, 3):
-    currentBoard = processPicture(currentBoard, index);
+    im = processPicture(currentBoard);
+    im.save("output" + str(index) + ".png")
+    currentBoard = getNextBoard(currentBoard)
     print("Board:")
     for row in currentBoard:
       print("".join(map(toArt, row)))
 
-
-def debug():
-    foreground = Image.open('./3.png').convert("RGBA")
-    background = Image.open("ChainLink.jpg").convert("RGBA")
-
-    background.paste(foreground, (0, 0), foreground)
-    background.show()
-    im.save('out.png')
-
 makeVideo()
-
-# debug()
