@@ -1,4 +1,5 @@
 from PIL import Image, ImageDraw
+from random import *
 
 # CALIBRATION
 gridWidth = 19 # actually one less than you would think
@@ -82,10 +83,18 @@ def indicesToPixels (xIndex, yIndex):
 
 
 im = Image.open("./ChainLink.jpg").convert("RGBA")
-openEye = Image.open("3.png").convert("RGBA")
-closedEye = Image.open("6.png").convert("RGBA")
+openEye1 = Image.open("1.png").convert("RGBA")
+openEye1 = openEye1.resize((200, 200), Image.ANTIALIAS)
+openEye2 = Image.open("2.png").convert("RGBA")
+openEye2 = openEye2.resize((200, 200), Image.ANTIALIAS)
+openEye3 = Image.open("3.png").convert("RGBA")
+openEye3 = openEye3.resize((200, 200), Image.ANTIALIAS)
+openEye4 = Image.open("4.png").convert("RGBA")
+openEye4 = openEye4.resize((200, 200), Image.ANTIALIAS)
+openEye5 = Image.open("5.png").convert("RGBA")
+openEye5 = openEye5.resize((200, 200), Image.ANTIALIAS)
+closedEye = Image.open("6dot.png").convert("RGBA")
 
-openEye = openEye.resize((200, 200), Image.ANTIALIAS)
 closedEye = closedEye.resize((200, 200), Image.ANTIALIAS)
 
 def processPicture(currentBoard):
@@ -95,7 +104,17 @@ def processPicture(currentBoard):
         [xPixel, yPixel] = indicesToPixels(xIndex, yIndex)
 
         if currentBoard[yIndex][xIndex] == 1:
-          im.paste(openEye, (int(xPixel) - 100, int(yPixel) - 100), openEye)
+          randomInt = randint(1, 5)
+          if (randomInt == 1):
+            im.paste(openEye1, (int(xPixel) - 100, int(yPixel) - 100), openEye1)
+          if (randomInt == 2):
+            im.paste(openEye2, (int(xPixel) - 100, int(yPixel) - 100), openEye2)
+          if (randomInt == 3):
+            im.paste(openEye3, (int(xPixel) - 100, int(yPixel) - 100), openEye3)
+          if (randomInt == 4):
+            im.paste(openEye4, (int(xPixel) - 100, int(yPixel) - 100), openEye4)
+          if (randomInt == 5):
+            im.paste(openEye5, (int(xPixel) - 100, int(yPixel) - 100), openEye5)
         else:
           im.paste(closedEye, (int(xPixel) - 100, int(yPixel) - 100), closedEye)
   return im
